@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { customerServices } from "./customer.service";
 import { StatusCodes } from "http-status-codes";
 
@@ -43,7 +43,7 @@ const getAllCustomers = async (req: Request, res: Response) => {
 };
 
 
-const getCustomerById = async (req: Request, res: Response) => {
+const getCustomerById = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     try {
         const result = await customerServices.getSpecificCustomerById(id);
@@ -52,20 +52,9 @@ const getCustomerById = async (req: Request, res: Response) => {
             message: 'Customer fetched successfully',
             data: result,
         });
-        
-        if (!result) {
-            res.status(StatusCodes.NOT_FOUND).json({
-                success: true,
-                message: 'Customer Not found',
-                data: result,
-            });
-        }
+
     } catch (error: any) {
-        res.status(StatusCodes.NOT_FOUND).json({
-            success: false,
-            message: 'Failed to fetch Customer!',
-            error: error?.message || 'Something went wrong',
-        });
+        next(error)
     }
 };
 

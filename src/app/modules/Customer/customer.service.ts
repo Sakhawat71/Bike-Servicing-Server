@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { error } from "console";
+import AppError from "../../errors/appError";
+import { StatusCodes } from "http-status-codes";
 
 const prisma = new PrismaClient();
 
@@ -37,7 +39,7 @@ const getSpecificCustomerById = async (id: string) => {
         });
 
         if (!result) {
-            throw new Error('Customer not found');
+            throw new AppError(StatusCodes.NOT_FOUND,'Customer not found');
         }
 
         return result;
