@@ -4,7 +4,7 @@
 This is a backend API for a Bike Servicing Management System, designed to manage customers, bikes, and service records for a bike servicing center. The API supports CRUD operations and includes features for assigning and completing service jobs, as well as retrieving pending or overdue services.
 
 ## Live Backend URL
-[To be added after deployment]
+[live link](https://bike-servicing-server.vercel.app/)
 
 ## Tech Stack
 - **Node.js**: Runtime environment

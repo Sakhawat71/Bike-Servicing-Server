@@ -6,6 +6,8 @@
     "tsdev": "tsnd --respawn dist/server.js",
     "dev": "nodemon dist/server.js",
     "start": "node dist/server.js",
+    "build": "tsc",
+    "prod" : "NODE_ENV=production node ./dist/server.js",
     "postinstall": "prisma generate",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
