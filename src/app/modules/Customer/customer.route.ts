@@ -3,7 +3,7 @@ import { customerControllers } from "./customer.controller";
 
 const router = Router();
 
-router.get('/', customerControllers.createCustomer);
+router.post('/', customerControllers.createCustomer);
 
 
 export const customerRouters = router;
