@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "dev": "tsnd --respawn dist/server.js",
+    "start": "nodemon dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -11,12 +13,17 @@
   "type": "commonjs",
   "description": "",
   "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
     "@types/node": "^22.14.1",
     "prisma": "^6.6.0",
+    "ts-node-dev": "^2.0.0",
     "tsx": "^4.19.3",
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@prisma/client": "^6.6.0"
+    "@prisma/client": "^6.6.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
   }
 }
