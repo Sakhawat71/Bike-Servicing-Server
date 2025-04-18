@@ -63,10 +63,29 @@ const getServiceRecordById = async (
     }
 };
 
-
+// 4. Mark a service as completed
+const completeServiceRecord = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const { serviceId } = req.params;
+        const result = await ServiceRecordServices.completeServiceRecord(serviceId, req.body);
+        res.status(StatusCodes.OK).json({
+            success: true,
+            status: StatusCodes.OK,
+            message: 'Service marked as completed',
+            data: result,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 
 export const ServiceRecordController = {
     createServiceRecord,
     getAllServiceRecords,
-    getServiceRecordById
+    getServiceRecordById,
+    completeServiceRecord
 };

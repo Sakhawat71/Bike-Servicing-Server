@@ -1,4 +1,6 @@
 import { PrismaClient } from "@prisma/client";
+import AppError from "../../errors/appError";
+import { StatusCodes } from "http-status-codes";
 
 
 const prisma = new PrismaClient();
@@ -32,12 +34,17 @@ const getBikes = async () => {
 // 3. Get a specific bike by ID
 const getBikeById = async (bikeId: string) => {
     try {
-        const bike = await prisma.bike.findUnique({
+        const result = await prisma.bike.findUnique({
             where: {
                 bikeId: bikeId
             }
         });
-        return bike;
+
+        if (!result) {
+            throw new AppError(StatusCodes.NOT_FOUND, 'Bike not found');
+        }
+
+        return result;
     } catch (error) {
         throw error;
     }

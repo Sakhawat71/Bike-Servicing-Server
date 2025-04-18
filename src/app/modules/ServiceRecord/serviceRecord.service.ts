@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client"
 import { get } from "http";
+import AppError from "../../errors/appError";
+import { StatusCodes } from "http-status-codes";
 
 
 const prisma = new PrismaClient();
@@ -8,7 +10,7 @@ const prisma = new PrismaClient();
 const createServiceRecord = async (data: any) => {
     try {
         const result = await prisma.serviceRecord.create({
-            data : {
+            data: {
                 ...data
             }
         });
@@ -38,6 +40,11 @@ const getServiceRecordById = async (serviceId: string) => {
                 serviceId: serviceId
             }
         });
+
+        if (!result) {
+            throw new AppError(StatusCodes.NOT_FOUND, 'Service Record not found');
+        }
+
         return result;
     } catch (error) {
         throw error;
@@ -45,10 +52,39 @@ const getServiceRecordById = async (serviceId: string) => {
 };
 
 
+// 4. Mark a service as completed
+const completeServiceRecord = async (serviceId: string, data: any) => {
+    try {
+
+        const service = await prisma.serviceRecord.findUnique({
+            where: { serviceId }
+        });
+        if (!service) {
+            throw new AppError(StatusCodes.NOT_FOUND, 'Service Record not found');
+        }
+        if (service.status === 'done') {
+            throw new AppError(StatusCodes.BAD_REQUEST, 'Service Record already completed');
+        }
+
+        const result = await prisma.serviceRecord.update({
+            where: {
+                serviceId: serviceId
+            },
+            data: {
+                completionDate: data?.completionDate || new Date(),
+                status: 'done'
+            }
+        });
+        return result;
+    } catch (error) {
+        throw error;
+    }
+};
+
 
 export const ServiceRecordServices = {
     createServiceRecord,
     getAllServiceRecords,
     getServiceRecordById,
-    
+    completeServiceRecord
 };
