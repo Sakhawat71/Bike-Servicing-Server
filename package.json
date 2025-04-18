@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "tsnd --respawn dist/server.js",
+    "tsdev": "tsnd --respawn dist/server.js",
+    "dev": "node dist/server.js",
     "start": "nodemon dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -7,7 +7,7 @@ app.use(express.json());
 
 
 app.get('/', (req, res) => {
-    res.send('');
+    res.send('Bike Servicing Server ................................');
 });
 
 export default app;
