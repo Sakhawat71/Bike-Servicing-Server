@@ -3,7 +3,7 @@ import { customerServices } from "./customer.service";
 import { StatusCodes } from "http-status-codes";
 
 
-const createCustomer = async (req: Request, res: Response) => {
+const createCustomer = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const result = await customerServices.createCustomer(req.body);
         res.status(StatusCodes.CREATED).json({
@@ -13,18 +13,12 @@ const createCustomer = async (req: Request, res: Response) => {
         });
 
     } catch (error: any) {
-        console.error('Error creating customer:', error);
-
-        res.status(StatusCodes.BAD_REQUEST).json({
-            success: false,
-            message: 'Failed to create customer',
-            error: error?.message || 'Something went wrong',
-        });
+        next(error);
     }
 };
 
 
-const getAllCustomers = async (req: Request, res: Response) => {
+const getAllCustomers = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const result = await customerServices.getAllCustomersFromDB();
         res.status(StatusCodes.OK).json({
@@ -34,19 +28,15 @@ const getAllCustomers = async (req: Request, res: Response) => {
         });
 
     } catch (error: any) {
-        res.status(StatusCodes.NOT_FOUND).json({
-            success: false,
-            message: 'Failed to fetch Customers!',
-            error: error?.message || 'Something went wrong',
-        });
+        next(error);
     }
 };
 
 
 const getCustomerById = async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.params;
+    const { customerId } = req.params;
     try {
-        const result = await customerServices.getSpecificCustomerById(id);
+        const result = await customerServices.getSpecificCustomerById(customerId);
         res.status(StatusCodes.OK).json({
             success: true,
             message: 'Customer fetched successfully',
@@ -58,8 +48,39 @@ const getCustomerById = async (req: Request, res: Response, next: NextFunction) 
     }
 };
 
+
+const updateCustomer = async (req: Request, res: Response, next: NextFunction) => {
+    const { customerId } = req.params;
+    try {
+        const result = await customerServices.updateCustomerById(customerId, req.body);
+        res.status(StatusCodes.OK).json({
+            success: true,
+            message: 'Customer updated successfully',
+            data: result,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+const deleteCustomer = async (req: Request, res: Response, next: NextFunction) => {
+    const { customerId } = req.params;
+    try {
+        const result = await customerServices.deleteCustomerById(customerId);
+        res.status(StatusCodes.OK).json({
+            success: true,
+            message: 'Customer deleted successfully',
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const customerControllers = {
     createCustomer,
     getAllCustomers,
-    getCustomerById
+    getCustomerById,
+    updateCustomer,
+    deleteCustomer
 };

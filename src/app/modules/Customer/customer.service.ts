@@ -30,16 +30,16 @@ const getAllCustomersFromDB = async () => {
 
 
 // 3. get specific customer
-const getSpecificCustomerById = async (id: string) => {
+const getSpecificCustomerById = async (customerId: string) => {
     try {
         const result = await prisma.customer.findUnique({
             where: {
-                customerId: id,
+                customerId
             },
         });
 
         if (!result) {
-            throw new AppError(StatusCodes.NOT_FOUND,'Customer not found');
+            throw new AppError(StatusCodes.NOT_FOUND, 'Customer not found');
         }
 
         return result;
@@ -49,9 +49,68 @@ const getSpecificCustomerById = async (id: string) => {
 };
 
 
+// 4. update customer
+
+const updateCustomerById = async (customerId: string, data: any) => {
+    try {
+        // Check if customer exists first
+        const isExist = await prisma.customer.findUnique({
+            where: { customerId },
+        });
+
+        if (!isExist) {
+            throw new AppError(StatusCodes.NOT_FOUND, 'Customer not found');
+        }
+
+        // Proceed to update
+        const updated = await prisma.customer.update({
+            where: { customerId },
+            data: { ...data },
+        });
+
+        return updated;
+    } catch (error: any) {
+        throw new AppError(
+            error.statusCode || StatusCodes.BAD_REQUEST,
+            error.message || 'Failed to update customer'
+        );
+    }
+};
+
+
+
+// 5. delete customer
+const deleteCustomerById = async (customerId: string) => {
+    try {
+
+        const isExist = await prisma.customer.findUnique({
+            where: { customerId },
+        });
+
+        if (!isExist) {
+            throw new AppError(StatusCodes.NOT_FOUND, 'Customer not found');
+        }
+
+        const result = await prisma.customer.delete({
+            where: {
+                customerId
+            },
+        });
+
+        return result;
+
+    } catch (error: any) {
+        throw new AppError(
+            error.statusCode || StatusCodes.BAD_REQUEST,
+            error.message || 'Failed to delete customer'
+        );
+    }
+};
 
 export const customerServices = {
     createCustomer,
     getAllCustomersFromDB,
     getSpecificCustomerById,
+    updateCustomerById,
+    deleteCustomerById
 }
