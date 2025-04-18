@@ -9,7 +9,11 @@ app.use(express.json());
 
 
 app.get('/', (req, res) => {
-    res.send('Bike Servicing Server ................................');
+    res.send({
+        success : true,
+        status : 200,
+        message : 'Bike Servicing Server ................................'
+    });
 });
 
 app.use('/api',router);

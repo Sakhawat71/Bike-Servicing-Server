@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import { error } from "console";
 import AppError from "../../errors/appError";
 import { StatusCodes } from "http-status-codes";
 

@@ -15,7 +15,7 @@
   "author": "Sakhawat",
   "license": "ISC",
   "type": "commonjs",
-  "description": "",
+  "description": "Bike Servicing Management API",
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
