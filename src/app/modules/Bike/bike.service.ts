@@ -29,8 +29,23 @@ const getBikes = async () => {
     }
 };
 
+// 3. Get a specific bike by ID
+const getBikeById = async (bikeId: string) => {
+    try {
+        const bike = await prisma.bike.findUnique({
+            where: {
+                bikeId: bikeId
+            }
+        });
+        return bike;
+    } catch (error) {
+        throw error;
+    }
+};
+
 
 export const bikeService = {
     addBike,
-    getBikes
+    getBikes,
+    getBikeById
 };
