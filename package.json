@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "tsdev": "tsnd --respawn dist/server.js",
-    "dev": "node dist/server.js",
-    "start": "nodemon dist/server.js",
+    "dev": "nodemon dist/server.js",
+    "start": "node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
