@@ -83,9 +83,30 @@ const completeServiceRecord = async (
     }
 };
 
+
+// Pending or Overdue Services (older than 7 days)
+const getOverdueServices = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const services = await ServiceRecordServices.getOverdueServices();
+        res.status(StatusCodes.OK).json({
+            success: true,
+            message: 'Overdue or pending services fetched successfully',
+            data: services,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
 export const ServiceRecordController = {
     createServiceRecord,
     getAllServiceRecords,
     getServiceRecordById,
-    completeServiceRecord
+    completeServiceRecord,
+    getOverdueServices,
 };

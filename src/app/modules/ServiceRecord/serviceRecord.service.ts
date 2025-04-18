@@ -82,9 +82,31 @@ const completeServiceRecord = async (serviceId: string, data: any) => {
 };
 
 
+// 5. Pending or Overdue Services (older than 7 days)
+const getOverdueServices = async () => {
+    try {
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+        const services = await prisma.serviceRecord.findMany({
+            where: {
+                OR: [{ status: 'pending' }, { status: 'in_progress' }],
+                serviceDate: { lte: sevenDaysAgo },
+            },
+        });
+
+        return services;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+
 export const ServiceRecordServices = {
     createServiceRecord,
     getAllServiceRecords,
     getServiceRecordById,
-    completeServiceRecord
+    completeServiceRecord,
+    getOverdueServices
 };

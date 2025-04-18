@@ -25,7 +25,6 @@ if (err instanceof AppError) {
     success: false,
     status: statusCode,
     message,
-    errorSources,
     ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
   });
 //   return;
